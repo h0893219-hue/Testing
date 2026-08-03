@@ -1,0 +1,1100 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HighSociety De – Cannabis Community Discord</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        weed: {
+                            50: '#f0fdf0',
+                            100: '#dcfce7',
+                            200: '#bbf7d0',
+                            300: '#86efac',
+                            400: '#4ade80',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                            800: '#166534',
+                            900: '#14532d',
+                        },
+                        dark: {
+                            800: '#1a1a2e',
+                            900: '#0f0f1a',
+                            950: '#080810',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Space Grotesk', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #080810;
+            color: #e2e8f0;
+            overflow-x: hidden;
+        }
+
+        /* ============ AGE GATE STYLES ============ */
+        .age-gate-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(8, 8, 16, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            animation: ageGateFadeIn 0.5s ease-out;
+            padding: 20px;
+        }
+        .age-gate-overlay.hidden {
+            display: none;
+        }
+        @keyframes ageGateFadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes ageGateScaleIn {
+            from { opacity: 0; transform: scale(0.85) translateY(20px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        @keyframes ageGateFadeOut {
+            from { opacity: 1; transform: scale(1); }
+            to { opacity: 0; transform: scale(0.95); }
+        }
+        .age-gate-card {
+            background: linear-gradient(145deg, rgba(26, 26, 46, 0.95), rgba(15, 15, 26, 0.98));
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            border-radius: 24px;
+            padding: 40px 32px;
+            max-width: 460px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.6), 0 0 60px rgba(34, 197, 94, 0.1);
+            animation: ageGateScaleIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        .age-gate-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(34, 197, 94, 0.08) 0%, transparent 60%);
+            pointer-events: none;
+        }
+        .age-gate-icon {
+            font-size: 64px;
+            margin-bottom: 16px;
+            display: inline-block;
+            filter: drop-shadow(0 0 20px rgba(34, 197, 94, 0.4));
+            position: relative;
+            z-index: 1;
+        }
+        .age-gate-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 28px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 12px;
+            position: relative;
+            z-index: 1;
+        }
+        .age-gate-text {
+            color: #9ca3af;
+            font-size: 15px;
+            line-height: 1.6;
+            margin-bottom: 28px;
+            position: relative;
+            z-index: 1;
+        }
+        .age-gate-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            position: relative;
+            z-index: 1;
+        }
+        .age-gate-btn {
+            padding: 14px 24px;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            font-family: 'Inter', sans-serif;
+        }
+        .age-gate-btn-yes {
+            background: linear-gradient(135deg, #22c55e, #15803d);
+            color: white;
+            box-shadow: 0 4px 20px rgba(34, 197, 94, 0.3);
+        }
+        .age-gate-btn-yes:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(34, 197, 94, 0.5);
+        }
+        .age-gate-btn-no {
+            background: transparent;
+            color: #9ca3af;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+        .age-gate-btn-no:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+        .age-gate-disclaimer {
+            margin-top: 20px;
+            font-size: 12px;
+            color: #6b7280;
+            position: relative;
+            z-index: 1;
+        }
+        body.age-gate-active {
+            overflow: hidden;
+        }
+        @media (max-width: 480px) {
+            .age-gate-card { padding: 32px 24px; }
+            .age-gate-title { font-size: 24px; }
+            .age-gate-icon { font-size: 56px; }
+        }
+
+        /* Animated gradient background */
+        .hero-bg {
+            background: radial-gradient(ellipse at 20% 50%, rgba(22, 163, 74, 0.15) 0%, transparent 50%),
+                        radial-gradient(ellipse at 80% 20%, rgba(34, 197, 94, 0.1) 0%, transparent 50%),
+                        radial-gradient(ellipse at 50% 80%, rgba(21, 128, 61, 0.1) 0%, transparent 50%),
+                        #080810;
+        }
+
+        /* Floating leaf animation */
+        .floating-leaf {
+            position: absolute;
+            opacity: 0.06;
+            animation: floatLeaf 20s ease-in-out infinite;
+        }
+
+        .floating-leaf:nth-child(2) {
+            animation-delay: -5s;
+            animation-duration: 25s;
+        }
+
+        .floating-leaf:nth-child(3) {
+            animation-delay: -10s;
+            animation-duration: 30s;
+        }
+
+        @keyframes floatLeaf {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            25% { transform: translateY(-30px) rotate(5deg); }
+            50% { transform: translateY(-15px) rotate(-3deg); }
+            75% { transform: translateY(-40px) rotate(7deg); }
+        }
+
+        /* Glow effect */
+        .glow-green {
+            box-shadow: 0 0 60px rgba(34, 197, 94, 0.3), 0 0 120px rgba(34, 197, 94, 0.1);
+        }
+
+        .glow-text {
+            text-shadow: 0 0 40px rgba(34, 197, 94, 0.5), 0 0 80px rgba(34, 197, 94, 0.2);
+        }
+
+        /* Card hover effects */
+        .feature-card {
+            background: linear-gradient(135deg, rgba(26, 26, 46, 0.8), rgba(15, 15, 26, 0.9));
+            border: 1px solid rgba(34, 197, 94, 0.1);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(10px);
+        }
+
+        .feature-card:hover {
+            border-color: rgba(34, 197, 94, 0.4);
+            transform: translateY(-8px);
+            box-shadow: 0 20px 60px rgba(34, 197, 94, 0.15);
+        }
+
+        .feature-card:hover .card-icon {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .card-icon {
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Discord button */
+        .discord-btn {
+            background: linear-gradient(135deg, #5865F2, #4752C4);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .discord-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .discord-btn:hover::before {
+            left: 100%;
+        }
+
+        .discord-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(88, 101, 242, 0.4);
+        }
+
+        /* Stats counter animation */
+        .stat-item {
+            background: linear-gradient(135deg, rgba(26, 26, 46, 0.6), rgba(15, 15, 26, 0.8));
+            border: 1px solid rgba(34, 197, 94, 0.15);
+            transition: all 0.3s ease;
+        }
+
+        .stat-item:hover {
+            border-color: rgba(34, 197, 94, 0.4);
+            background: linear-gradient(135deg, rgba(26, 26, 46, 0.8), rgba(15, 15, 26, 0.9));
+        }
+
+        /* Navbar */
+        .navbar {
+            background: rgba(8, 8, 16, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(34, 197, 94, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .navbar.scrolled {
+            background: rgba(8, 8, 16, 0.95);
+            border-bottom-color: rgba(34, 197, 94, 0.2);
+        }
+
+        /* Leaf SVG pattern */
+        .leaf-pattern {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Cpath d='M30 5 C25 15, 15 20, 10 30 C15 28, 20 25, 25 20 C20 30, 15 35, 10 45 C20 38, 25 32, 30 25 C35 32, 40 38, 50 45 C45 35, 40 30, 35 20 C40 25, 45 28, 50 30 C45 20, 35 15, 30 5Z' fill='rgba(34,197,94,0.03)'/%3E%3C/svg%3E");
+        }
+
+        /* Scroll reveal */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Pulse animation */
+        @keyframes pulse-green {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.4); }
+            50% { box-shadow: 0 0 0 15px rgba(34, 197, 94, 0); }
+        }
+
+        .pulse-dot {
+            animation: pulse-green 2s ease-in-out infinite;
+        }
+
+        /* Gradient border */
+        .gradient-border {
+            position: relative;
+        }
+
+        .gradient-border::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            border-radius: inherit;
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.5), rgba(21, 128, 61, 0.2), rgba(34, 197, 94, 0.5));
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .gradient-border:hover::before {
+            opacity: 1;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #080810;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(34, 197, 94, 0.3);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(34, 197, 94, 0.5);
+        }
+
+        /* Team member cards */
+        .team-card {
+            background: linear-gradient(135deg, rgba(26, 26, 46, 0.6), rgba(15, 15, 26, 0.8));
+            border: 1px solid rgba(34, 197, 94, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .team-card:hover {
+            border-color: rgba(34, 197, 94, 0.3);
+            transform: translateY(-5px);
+        }
+
+        /* FAQ */
+        .faq-item {
+            border: 1px solid rgba(34, 197, 94, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .faq-item:hover {
+            border-color: rgba(34, 197, 94, 0.3);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease, padding 0.4s ease;
+        }
+
+        .faq-item.open .faq-answer {
+            max-height: 200px;
+            padding-top: 1rem;
+        }
+
+        .faq-item.open .faq-chevron {
+            transform: rotate(180deg);
+        }
+
+        .faq-chevron {
+            transition: transform 0.3s ease;
+        }
+
+        /* Mobile menu */
+        .mobile-menu {
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+        }
+
+        .mobile-menu.open {
+            transform: translateX(0);
+        }
+
+        /* Particle effect */
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(34, 197, 94, 0.6);
+            border-radius: 50%;
+            animation: particleFloat 8s ease-in-out infinite;
+        }
+
+        @keyframes particleFloat {
+            0%, 100% { transform: translate(0, 0) scale(1); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            50% { transform: translate(var(--tx), var(--ty)) scale(0.5); }
+        }
+    </style>
+</head>
+
+<body class="leaf-pattern age-gate-active">
+
+    <!-- ============ AGE GATE (erscheint zuerst) ============ -->
+    <div id="ageGate" class="age-gate-overlay">
+        <div class="age-gate-card">
+            <span class="age-gate-icon">🔞</span>
+            <h1 class="age-gate-title">Altersverifikation</h1>
+            <p class="age-gate-text">
+                Diese Community ist nur für Personen ab 18 Jahren zugänglich. Bitte bestätige dein Alter, um fortzufahren.
+            </p>
+            <div class="age-gate-buttons">
+                <button class="age-gate-btn age-gate-btn-yes" onclick="confirmAge()">
+                    ✓ Ja, ich bin 18 Jahre oder älter
+                </button>
+                <button class="age-gate-btn age-gate-btn-no" onclick="declineAge()">
+                    ✗ Nein, ich bin unter 18
+                </button>
+            </div>
+            <p class="age-gate-disclaimer">
+                Mit dem Betreten bestätigst du, dass du volljährig bist.
+            </p>
+        </div>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="navbar fixed top-0 left-0 right-0 z-50 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto flex items-center justify-between h-16 md:h-20">
+            <a href="#" class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-weed-400 to-weed-700 flex items-center justify-center">
+                    <svg class="w-6 h-6 text-white" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2C9 7 4 9 2 14c3-1 5-3 7-6-1 4-2 7-4 10 4-2 7-5 9-9 2 4 5 7 9 9-2-3-3-6-4-10 2 3 4 5 7 6-2-5-7-7-10-12z"/>
+                    </svg>
+                </div>
+                <span class="font-display font-bold text-xl text-white">HighSociety <span class="text-weed-400">De</span></span>
+            </a>
+            <!-- Desktop Nav -->
+            <div class="hidden md:flex items-center gap-8">
+                <a href="#features" class="text-gray-300 hover:text-weed-400 transition-colors text-sm font-medium">Features</a>
+                <a href="#community" class="text-gray-300 hover:text-weed-400 transition-colors text-sm font-medium">Community</a>
+                <a href="#team" class="text-gray-300 hover:text-weed-400 transition-colors text-sm font-medium">Team</a>
+                <a href="#faq" class="text-gray-300 hover:text-weed-400 transition-colors text-sm font-medium">FAQ</a>
+                <a href="https://discord.gg/8JfmxswBp5" target="_blank" class="discord-btn px-6 py-2.5 rounded-xl text-white font-semibold text-sm flex items-center gap-2">
+                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/>
+                    </svg>
+                    Beitreten
+                </a>
+            </div>
+            <!-- Mobile menu button -->
+            <button id="mobileMenuBtn" class="md:hidden text-white p-2">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                </svg>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="mobile-menu fixed inset-0 z-40 bg-dark-950/98 backdrop-blur-xl flex flex-col items-center justify-center gap-8">
+        <button id="closeMobileMenu" class="absolute top-5 right-5 text-white p-2">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+        </button>
+        <a href="#features" class="text-2xl text-gray-200 hover:text-weed-400 transition-colors font-medium" onclick="closeMobile()">Features</a>
+        <a href="#community" class="text-2xl text-gray-200 hover:text-weed-400 transition-colors font-medium" onclick="closeMobile()">Community</a>
+        <a href="#team" class="text-2xl text-gray-200 hover:text-weed-400 transition-colors font-medium" onclick="closeMobile()">Team</a>
+        <a href="#faq" class="text-2xl text-gray-200 hover:text-weed-400 transition-colors font-medium" onclick="closeMobile()">FAQ</a>
+        <a href="https://discord.gg/8JfmxswBp5" target="_blank" class="discord-btn px-8 py-3 rounded-xl text-white font-semibold text-lg flex items-center gap-2 mt-4">
+            <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/>
+            </svg>
+            Jetzt Beitreten
+        </a>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero-bg min-h-screen flex items-center justify-center relative overflow-hidden pt-20">
+        <!-- Floating leaves -->
+        <div class="floating-leaf top-20 left-10">
+            <svg width="120" height="120" viewBox="0 0 24 24" fill="rgba(34,197,94,0.8)">
+                <path d="M12 2C9 7 4 9 2 14c3-1 5-3 7-6-1 4-2 7-4 10 4-2 7-5 9-9 2 4 5 7 9 9-2-3-3-6-4-10 2 3 4 5 7 6-2-5-7-7-10-12z"/>
+            </svg>
+        </div>
+        <div class="floating-leaf top-40 right-20">
+            <svg width="80" height="80" viewBox="0 0 24 24" fill="rgba(34,197,94,0.8)">
+                <path d="M12 2C9 7 4 9 2 14c3-1 5-3 7-6-1 4-2 7-4 10 4-2 7-5 9-9 2 4 5 7 9 9-2-3-3-6-4-10 2 3 4 5 7 6-2-5-7-7-10-12z"/>
+            </svg>
+        </div>
+        <div class="floating-leaf bottom-40 left-1/4">
+            <svg width="60" height="60" viewBox="0 0 24 24" fill="rgba(34,197,94,0.8)">
+                <path d="M12 2C9 7 4 9 2 14c3-1 5-3 7-6-1 4-2 7-4 10 4-2 7-5 9-9 2 4 5 7 9 9-2-3-3-6-4-10 2 3 4 5 7 6-2-5-7-7-10-12z"/>
+            </svg>
+        </div>
+        <!-- Particles -->
+        <div id="particles" class="absolute inset-0 pointer-events-none"></div>
+        <div class="text-center px-4 relative z-10 max-w-5xl mx-auto">
+            <!-- Online indicator -->
+            <div class="inline-flex items-center gap-2 bg-weed-900/30 border border-weed-700/30 rounded-full px-4 py-2 mb-8">
+                <span class="w-2.5 h-2.5 bg-weed-400 rounded-full pulse-dot"></span>
+                <span class="text-weed-300 text-sm font-medium">Über 60+ Mitglieder online</span>
+            </div>
+            <h1 class="font-display font-bold text-5xl sm:text-6xl md:text-7xl lg:text-8xl text-white mb-6 leading-tight">
+                HighSociety
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-weed-400 via-weed-300 to-weed-500 glow-text"> De</span>
+            </h1>
+            <p class="text-lg sm:text-xl md:text-2xl text-gray-400 max-w-3xl mx-auto mb-10 leading-relaxed">
+                Die größte deutschsprachige Cannabis Community auf Discord. 
+                <span class="text-weed-400 font-medium">Verbinde dich</span> mit Gleichgesinnten, teile Wissen und werde Teil einer einzigartigen Community.
+            </p>
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <a href="https://discord.gg/8JfmxswBp5" target="_blank" class="discord-btn px-8 py-4 rounded-2xl text-white font-bold text-lg flex items-center gap-3 w-full sm:w-auto justify-center">
+                    <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/>
+                    </svg>
+                    Discord Beitreten
+                </a>
+                <a href="#features" class="px-8 py-4 rounded-2xl border border-weed-700/40 text-weed-400 font-semibold text-lg hover:bg-weed-900/20 transition-all w-full sm:w-auto text-center">
+                    Mehr erfahren ↓
+                </a>
+            </div>
+            <!-- Scroll indicator -->
+            <div class="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce hidden md:block">
+                <svg class="w-6 h-6 text-weed-500/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+                </svg>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section id="community" class="py-20 px-4 relative">
+        <div class="max-w-6xl mx-auto">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+                <div class="stat-item rounded-2xl p-6 text-center reveal">
+                    <div class="text-3xl md:text-4xl font-bold text-weed-400 font-display mb-2" data-count="407">0</div>
+                    <div class="text-gray-400 text-sm">Mitglieder</div>
+                </div>
+                <div class="stat-item rounded-2xl p-6 text-center reveal" style="transition-delay: 0.1s">
+                    <div class="text-3xl md:text-4xl font-bold text-weed-400 font-display mb-2" data-count="60">0</div>
+                    <div class="text-gray-400 text-sm">Gerade Online</div>
+                </div>
+                <div class="stat-item rounded-2xl p-6 text-center reveal" style="transition-delay: 0.2s">
+                    <div class="text-3xl md:text-4xl font-bold text-weed-400 font-display mb-2" data-count="30">0</div>
+                    <div class="text-gray-400 text-sm">Kanäle</div>
+                </div>
+                <div class="stat-item rounded-2xl p-6 text-center reveal" style="transition-delay: 0.3s">
+                    <div class="text-3xl md:text-4xl font-bold text-weed-400 font-display mb-2" data-count="24">0</div>
+                    <div class="text-gray-400 text-sm">/7 Aktiv</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-20 px-4 relative">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16 reveal">
+                <span class="text-weed-400 font-medium text-sm uppercase tracking-wider">Was uns ausmacht</span>
+                <h2 class="font-display font-bold text-3xl sm:text-4xl md:text-5xl text-white mt-3 mb-4">
+                    Warum HighSociety De?
+                </h2>
+                <p class="text-gray-400 text-lg max-w-2xl mx-auto">
+                    Entdecke, was unsere Community besonders macht und warum Hunderte Mitglieder uns vertrauen.
+                </p>
+            </div>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Feature 1 -->
+                <div class="feature-card rounded-2xl p-8 reveal">
+                    <div class="card-icon w-14 h-14 rounded-xl bg-gradient-to-br from-weed-500/20 to-weed-700/20 flex items-center justify-center mb-6">
+                        <svg class="w-7 h-7 text-weed-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                        </svg>
+                    </div>
+                    <h3 class="font-display font-bold text-xl text-white mb-3">Aktive Community</h3>
+                    <p class="text-gray-400 leading-relaxed">Hunderte aktive Mitglieder, die täglich diskutieren, Fragen beantworten und sich austauschen. Langeweile? Fehlanzeige!</p>
+                </div>
+                <!-- Feature 2 -->
+                <div class="feature-card rounded-2xl p-8 reveal" style="transition-delay: 0.1s">
+                    <div class="card-icon w-14 h-14 rounded-xl bg-gradient-to-br from-weed-500/20 to-weed-700/20 flex items-center justify-center mb-6">
+                        <svg class="w-7 h-7 text-weed-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                        </svg>
+                    </div>
+                    <h3 class="font-display font-bold text-xl text-white mb-3">Wissen & Aufklärung</h3>
+                    <p class="text-gray-400 leading-relaxed">Fundierte Informationen über Sorten, Anbau, Konsum und Gesetzeslagen. Von der Community für die Community.</p>
+                </div>
+                <!-- Feature 3 -->
+                <div class="feature-card rounded-2xl p-8 reveal" style="transition-delay: 0.2s">
+                    <div class="card-icon w-14 h-14 rounded-xl bg-gradient-to-br from-weed-500/20 to-weed-700/20 flex items-center justify-center mb-6">
+                        <svg class="w-7 h-7 text-weed-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                        </svg>
+                    </div>
+                    <h3 class="font-display font-bold text-xl text-white mb-3">Sicher & Respektvoll</h3>
+                    <p class="text-gray-400 leading-relaxed">Unser engagiertes Moderationsteam sorgt für eine sichere, respektvolle und freundliche Atmosphäre rund um die Uhr.</p>
+                </div>
+                <!-- Feature 4 -->
+                <div class="feature-card rounded-2xl p-8 reveal" style="transition-delay: 0.3s">
+                    <div class="card-icon w-14 h-14 rounded-xl bg-gradient-to-br from-weed-500/20 to-weed-700/20 flex items-center justify-center mb-6">
+                        <svg class="w-7 h-7 text-weed-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                        </svg>
+                    </div>
+                    <h3 class="font-display font-bold text-xl text-white mb-3">Events & Voice Chats</h3>
+                    <p class="text-gray-400 leading-relaxed">Regelmäßige Community-Events, Voice-Chat Sessions, Game-Nights und spannende Diskussionen in unseren Voice-Kanälen.</p>
+                </div>
+                <!-- Feature 5 -->
+                <div class="feature-card rounded-2xl p-8 reveal" style="transition-delay: 0.4s">
+                    <div class="card-icon w-14 h-14 rounded-xl bg-gradient-to-br from-weed-500/20 to-weed-700/20 flex items-center justify-center mb-6">
+                        <svg class="w-7 h-7 text-weed-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                        </svg>
+                    </div>
+                    <h3 class="font-display font-bold text-xl text-white mb-3">Custom Bot & Leveling</h3>
+                    <p class="text-gray-400 leading-relaxed">Unser custom Bot bietet Leveling-System, Verlosungen, Mini-Games und vieles mehr. Sei aktiv und sammle exklusive Rollen!</p>
+                </div>
+                <!-- Feature 6 -->
+                <div class="feature-card rounded-2xl p-8 reveal" style="transition-delay: 0.5s">
+                    <div class="card-icon w-14 h-14 rounded-xl bg-gradient-to-br from-weed-500/20 to-weed-700/20 flex items-center justify-center mb-6">
+                        <svg class="w-7 h-7 text-weed-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+                    <h3 class="font-display font-bold text-xl text-white mb-3">Regional & Lokal</h3>
+                    <p class="text-gray-400 leading-relaxed">Regionale Kanäle für alle Bundesländer. Finde Gleichgesinnte in deiner Nähe und tausche dich lokal aus.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Channels Preview -->
+    <section class="py-20 px-4 relative">
+        <div class="max-w-5xl mx-auto reveal">
+            <div class="text-center mb-12">
+                <span class="text-weed-400 font-medium text-sm uppercase tracking-wider">Einblicke</span>
+                <h2 class="font-display font-bold text-3xl sm:text-4xl text-white mt-3 mb-4">
+                    Unsere beliebtesten Kanäle
+                </h2>
+            </div>
+            <div class="bg-dark-800/50 border border-weed-900/30 rounded-2xl overflow-hidden">
+                <div class="p-4 border-b border-white/5">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-full bg-gradient-to-br from-weed-400 to-weed-700 flex items-center justify-center">
+                            <svg class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 2C9 7 4 9 2 14c3-1 5-3 7-6-1 4-2 7-4 10 4-2 7-5 9-9 2 4 5 7 9 9-2-3-3-6-4-10 2 3 4 5 7 6-2-5-7-7-10-12z"/>
+                            </svg>
+                        </div>
+                        <span class="font-display font-bold text-white">HighSociety De</span>
+                        <span class="text-xs bg-weed-900/50 text-weed-400 px-2 py-0.5 rounded-full">407 Mitglieder</span>
+                    </div>
+                </div>
+                <div class="p-4 space-y-1">
+                    <div class="text-xs text-gray-500 uppercase font-semibold tracking-wider mb-2 px-2">📋 Information</div>
+                    <div class="flex items-center gap-2 px-3 py-2 rounded-lg text-gray-400 hover:bg-white/5 transition-colors">
+                        <span class="text-gray-500">#</span> <span>📜 | regeln </span>
+                    </div>
+                    <div class="flex items-center gap-2 px-3 py-2 rounded-lg text-gray-400 hover:bg-white/5 transition-colors">
+                        <span class="text-gray-500">#</span> <span>📣 | announcements </span>
+                    </div>
+                    <div class="flex items-center gap-2 px-3 py-2 rounded-lg text-gray-400 hover:bg-white/5 transition-colors">
+                        <span class="text-gray-500">#</span> <span>🎱 | role-select</span>
+                    </div>
+                    <div class="text-xs text-gray-500 uppercase font-semibold tracking-wider mb-2 mt-4 px-2">💬 Babylon Central</div>
+                    <div class="flex items-center gap-2 px-3 py-2 rounded-lg bg-weed-900/20 text-white transition-colors">
+                        <span class="text-gray-500">#</span> <span>💬 | blaze-n-babble</span>
+                        <span class="ml-auto text-xs bg-red-500/80 text-white px-1.5 py-0.5 rounded-full">42</span>
+                    </div>
+                    <div class="flex items-center gap-2 px-3 py-2 rounded-lg text-gray-400 hover:bg-white/5 transition-colors">
+                        <span class="text-gray-500">#</span> <span>🗿 | spam-of-glory</span>
+                        <span class="ml-auto text-xs bg-red-500/80 text-white px-1.5 py-0.5 rounded-full">18</span>
+                    </div>
+                    <div class="flex items-center gap-2 px-3 py-2 rounded-lg text-gray-400 hover:bg-white/5 transition-colors">
+                        <span class="text-gray-500">#</span> <span>💰 | high-coins</span>
+                    </div>
+                    <div class="text-xs text-gray-500 uppercase font-semibold tracking-wider mb-2 mt-4 px-2">🚥 Trenchtown Alley</div>
+                    <div class="flex items-center gap-2 px-3 py-2 rounded-lg text-gray-400 hover:bg-white/5 transition-colors">
+                        <span class="text-gray-500">#</span> <span>🥦 | canna-show</span>
+                        <span class="ml-auto text-xs bg-red-500/80 text-white px-1.5 py-0.5 rounded-full">7</span>
+                    </div>
+                    <div class="flex items-center gap-2 px-3 py-2 rounded-lg text-gray-400 hover:bg-white/5 transition-colors">
+                        <span class="text-gray-500">#</span> <span>💭 | Daily Spark</span>
+                    </div>
+                    <div class="flex items-center gap-2 px-3 py-2 rounded-lg text-gray-400 hover:bg-white/5 transition-colors">
+                        <span class="text-gray-500">#</span> <span>🍀 | grow-talk</span>
+                    </div>
+                    <div class="flex items-center gap-2 px-3 py-2 rounded-lg text-gray-400 hover:bg-white/5 transition-colors">
+                        <span class="text-gray-500">#</span> <span>🔁 | seed-swap</span>
+                    </div>
+                    <div class="text-xs text-gray-500 uppercase font-semibold tracking-wider mb-2 mt-4 px-2">🔊 Voice</div>
+                    <div class="flex items-center gap-2 px-3 py-2 rounded-lg text-gray-400 hover:bg-white/5 transition-colors">
+                        <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072M18.364 5.636a9 9 0 010 12.728M12 18.75a.75.75 0 11-1.5 0 .75.75 0 011.5 0z"/>
+                        </svg>
+                        <span>🍿 | stoner-embassy</span>
+                        <span class="ml-auto text-xs text-weed-400">5 🔊</span>
+                    </div>
+                    <div class="flex items-center gap-2 px-3 py-2 rounded-lg text-gray-400 hover:bg-white/5 transition-colors">
+                        <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072M18.364 5.636a9 9 0 010 12.728M12 18.75a.75.75 0 11-1.5 0 .75.75 0 011.5 0z"/>
+                        </svg>
+                        <span>🎮 | spielzimmer</span>
+                        <span class="ml-auto text-xs text-weed-400">3 🔊</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section id="team" class="py-20 px-4 relative">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16 reveal">
+                <span class="text-weed-400 font-medium text-sm uppercase tracking-wider">Das Team</span>
+                <h2 class="font-display font-bold text-3xl sm:text-4xl text-white mt-3 mb-4">
+                    Hinter der Community
+                </h2>
+                <p class="text-gray-400 text-lg max-w-2xl mx-auto">
+                    Unser engagiertes Team sorgt dafür, dass alles reibungslos läuft.
+                </p>
+            </div>
+            <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="team-card rounded-2xl p-6 text-center reveal">
+                    <div class="w-20 h-20 rounded-full bg-gradient-to-br from-weed-400 to-weed-700 mx-auto mb-4 flex items-center justify-center text-2xl font-bold text-white">
+                        🌿
+                    </div>
+                    <h4 class="font-display font-bold text-white text-lg">SchuRi</h4>
+                    <p class="text-weed-400 text-sm font-medium mb-2">Gründer</p>
+                    <p class="text-gray-500 text-sm">Gründer der Community seit 2024.</p>
+                </div>
+                <div class="team-card rounded-2xl p-6 text-center reveal" style="transition-delay: 0.1s">
+                    <div class="w-20 h-20 rounded-full bg-gradient-to-br from-purple-400 to-purple-700 mx-auto mb-4 flex items-center justify-center text-2xl font-bold text-white">
+                        ⚡
+                    </div>
+                    <h4 class="font-display font-bold text-white text-lg">Winter</h4>
+                    <p class="text-purple-400 text-sm font-medium mb-2">ModSquard</p>
+                    <p class="text-gray-500 text-sm">Verantwortlich für die moderation und Social media.</p>
+                </div>
+                <div class="team-card rounded-2xl p-6 text-center reveal" style="transition-delay: 0.2s">
+                    <div class="w-20 h-20 rounded-full bg-gradient-to-br from-blue-400 to-blue-700 mx-auto mb-4 flex items-center justify-center text-2xl font-bold text-white">
+                        🛡️
+                    </div>
+                    <h4 class="font-display font-bold text-white text-lg">Jannis</h4>
+                    <p class="text-blue-400 text-sm font-medium mb-2">ModSquad</p>
+                    <p class="text-gray-500 text-sm">Verantworlich für moderation des Server's</p>
+                </div>
+                <div class="team-card rounded-2xl p-6 text-center reveal" style="transition-delay: 0.3s">
+                    <div class="w-20 h-20 rounded-full bg-gradient-to-br from-amber-400 to-amber-700 mx-auto mb-4 flex items-center justify-center text-2xl font-bold text-white">
+                        🤖
+                    </div>
+                    <h4 class="font-display font-bold text-white text-lg">Jason</h4>
+                    <p class="text-amber-400 text-sm font-medium mb-2">Website Ersteller</p>
+                    <p class="text-gray-500 text-sm">Entwickelt und wartet unsere Website.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="py-20 px-4 relative">
+        <div class="max-w-3xl mx-auto">
+            <div class="text-center mb-16 reveal">
+                <span class="text-weed-400 font-medium text-sm uppercase tracking-wider">FAQ</span>
+                <h2 class="font-display font-bold text-3xl sm:text-4xl text-white mt-3 mb-4">
+                    Häufige Fragen
+                </h2>
+            </div>
+            <div class="space-y-4">
+                <div class="faq-item rounded-xl bg-dark-800/50 p-6 cursor-pointer reveal" onclick="toggleFaq(this)">
+                    <div class="flex items-center justify-between">
+                        <h4 class="font-medium text-white pr-4">Wie trete ich dem Server bei?</h4>
+                        <svg class="faq-chevron w-5 h-5 text-weed-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </div>
+                    <div class="faq-answer text-gray-400">
+                        Klicke einfach auf den "Discord Beitreten" Button oben auf der Seite. Du wirst direkt zu unserem Discord-Server weitergeleitet. Dort kannst du dich mit deinem Discord-Account anmelden und sofort loslegen!
+                    </div>
+                </div>
+                <div class="faq-item rounded-xl bg-dark-800/50 p-6 cursor-pointer reveal" style="transition-delay: 0.1s" onclick="toggleFaq(this)">
+                    <div class="flex items-center justify-between">
+                        <h4 class="font-medium text-white pr-4">Gibt es ein Mindestalter?</h4>
+                        <svg class="faq-chevron w-5 h-5 text-weed-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </div>
+                    <div class="faq-answer text-gray-400">
+                        Ja, du musst mindestens 18 Jahre alt sein, um unserem Server beizutreten. Beim Beitritt musst du dies durch eine Altersverifikation bestätigen.
+                    </div>
+                </div>
+                <div class="faq-item rounded-xl bg-dark-800/50 p-6 cursor-pointer reveal" style="transition-delay: 0.2s" onclick="toggleFaq(this)">
+                    <div class="flex items-center justify-between">
+                        <h4 class="font-medium text-white pr-4">Ist der Server legal?</h4>
+                        <svg class="faq-chevron w-5 h-5 text-weed-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </div>
+                    <div class="faq-answer text-gray-400">
+                        Absolut! Unser Server dient der Aufklärung, Information und dem Austausch innerhalb der legalen Grenzen. Wir tolerieren keinen illegalen Handel. Seit der Teillegalisierung in Deutschland ist die Community-Plattform wichtiger denn je.
+                    </div>
+                </div>
+                <div class="faq-item rounded-xl bg-dark-800/50 p-6 cursor-pointer reveal" style="transition-delay: 0.3s" onclick="toggleFaq(this)">
+                    <div class="flex items-center justify-between">
+                        <h4 class="font-medium text-white pr-4">Was passiert bei Regelverstößen?</h4>
+                        <svg class="faq-chevron w-5 h-5 text-weed-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </div>
+                    <div class="faq-answer text-gray-400">
+                        Wir haben ein faires Verwarnungssystem: Bei leichten Verstößen gibt es eine mündliche Verwarnung, bei schwereren einen Mute oder Temp-Ban. Schwere Verstöße wie Hassrede oder illegaler Handel führen zu einem permanenten Ban.
+                    </div>
+                </div>
+                <div class="faq-item rounded-xl bg-dark-800/50 p-6 cursor-pointer reveal" style="transition-delay: 0.4s" onclick="toggleFaq(this)">
+                    <div class="flex items-center justify-between">
+                        <h4 class="font-medium text-white pr-4">Kann ich Moderator werden?</h4>
+                        <svg class="faq-chevron w-5 h-5 text-weed-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </div>
+                    <div class="faq-answer text-gray-400">
+                        Ja! Wir suchen regelmäßig neue Teammitglieder. Wenn du aktiv, zuverlässig und mindestens 18 Jahre alt bist, bewirb dich einfach über den #team-bewerbung Kanal auf unserem Server.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-20 px-4 relative">
+        <div class="max-w-4xl mx-auto reveal">
+            <div class="relative rounded-3xl overflow-hidden">
+                <div class="absolute inset-0 bg-gradient-to-br from-weed-900/80 via-dark-800 to-dark-900"></div>
+                <div class="absolute inset-0 bg-gradient-to-r from-weed-600/10 to-transparent"></div>
+                <div class="absolute inset-0 rounded-3xl border border-weed-500/20"></div>
+                <div class="relative p-8 sm:p-12 md:p-16 text-center">
+                    <div class="inline-flex items-center gap-2 bg-weed-900/40 border border-weed-700/30 rounded-full px-4 py-2 mb-6">
+                        <span class="w-2 h-2 bg-weed-400 rounded-full animate-pulse"></span>
+                        <span class="text-weed-300 text-sm">Werde noch heute Teil der Community</span>
+                    </div>
+                    <h2 class="font-display font-bold text-3xl sm:text-4xl md:text-5xl text-white mb-6">
+                        Bereit für die<br>
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-weed-300 to-weed-500">HighSociety?</span>
+                    </h2>
+                    <p class="text-gray-300 text-lg max-w-xl mx-auto mb-8">
+                        Schließe dich über 407 Mitgliedern an und werde Teil der größten deutschen Cannabis Community auf Discord.
+                    </p>
+                    <a href="https://discord.gg/8JfmxswBp5" target="_blank" class="discord-btn inline-flex items-center gap-3 px-10 py-4 rounded-2xl text-white font-bold text-lg">
+                        <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/>
+                        </svg>
+                        Jetzt Kostenlos Beitreten
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-white/5 py-12 px-4">
+        <div class="max-w-6xl mx-auto">
+            <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+                <div>
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-weed-400 to-weed-700 flex items-center justify-center">
+                            <svg class="w-6 h-6 text-white" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 2C9 7 4 9 2 14c3-1 5-3 7-6-1 4-2 7-4 10 4-2 7-5 9-9 2 4 5 7 9 9-2-3-3-6-4-10 2 3 4 5 7 6-2-5-7-7-10-12z"/>
+                            </svg>
+                        </div>
+                        <span class="font-display font-bold text-xl text-white">HighSociety <span class="text-weed-400">De</span></span>
+                    </div>
+                    <p class="text-gray-500 text-sm leading-relaxed">Die größte deutschsprachige Cannabis Community auf Discord. Seit 2024.</p>
+                </div>
+                <div>
+                    <h4 class="font-display font-bold text-white mb-4">Community</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-500 hover:text-weed-400 transition-colors text-sm">Discord Beitreten</a></li>
+                        <li><a href="#" class="text-gray-500 hover:text-weed-400 transition-colors text-sm">Regeln</a></li>
+                        <li><a href="#" class="text-gray-500 hover:text-weed-400 transition-colors text-sm">Team Bewerbung</a></li>
+                        <li><a href="#" class="text-gray-500 hover:text-weed-400 transition-colors text-sm">Partner werden</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-display font-bold text-white mb-4">Ressourcen</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-500 hover:text-weed-400 transition-colors text-sm">Gesetzgebung</a></li>
+                        <li><a href="#" class="text-gray-500 hover:text-weed-400 transition-colors text-sm">Sorten-Wiki</a></li>
+                        <li><a href="#" class="text-gray-500 hover:text-weed-400 transition-colors text-sm">Anbau-Guide</a></li>
+                        <li><a href="#" class="text-gray-500 hover:text-weed-400 transition-colors text-sm">Harm Reduction</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-display font-bold text-white mb-4">Social Media</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-500 hover:text-weed-400 transition-colors text-sm">Twitter / X</a></li>
+                        <li><a href="#" class="text-gray-500 hover:text-weed-400 transition-colors text-sm">Instagram</a></li>
+                        <li><a href="#" class="text-gray-500 hover:text-weed-400 transition-colors text-sm">TikTok</a></li>
+                        <li><a href="#" class="text-gray-500 hover:text-weed-400 transition-colors text-sm">YouTube</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-white/5 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <p class="text-gray-600 text-sm">© 2024 HighSociety De. Alle Rechte vorbehalten.</p>
+                <div class="flex items-center gap-4">
+                    <a href="#" class="text-gray-600 hover:text-weed-400 transition-colors text-sm">Impressum</a>
+                    <a href="#" class="text-gray-600 hover:text-weed-400 transition-colors text-sm">Datenschutz</a>
+                    <a href="#" class="text-gray-600 hover:text-weed-400 transition-colors text-sm">AGB</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // ============================================
+        // AGE GATE - HIER DIE WEITERLEITUNGS-URL ÄNDERN
+        // ============================================
+        const UNDERAGE_REDIRECT_URL = 'https://www.youtube.com/watch?v=0Pp42bXXQZA&list=RD0Pp42bXXQZA&start_radio=1';
+        // ============================================
+
+        // Prüfe, ob Alter bereits verifiziert wurde (nur für die Session)
+        if (sessionStorage.getItem('ageVerified') === 'true') {
+            hideAgeGate();
+        }
+
+        function confirmAge() {
+            sessionStorage.setItem('ageVerified', 'true');
+            
+            // Sanfte Fade-Out Animation
+            const gate = document.getElementById('ageGate');
+            const card = gate.querySelector('.age-gate-card');
+            card.style.animation = 'ageGateFadeOut 0.4s ease-out forwards';
+            
+            setTimeout(() => {
+                hideAgeGate();
+            }, 400);
+        }
+
+        function declineAge() {
+            // Weiterleitung zur eingestellten URL
+            window.location.href = UNDERAGE_REDIRECT_URL;
+        }
+
+        function hideAgeGate() {
+            const gate = document.getElementById('ageGate');
+            gate.classList.add('hidden');
+            document.body.classList.remove('age-gate-active');
+        }
+
+        // Mobile menu
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const closeMobileMenu = document.getElementById('closeMobileMenu');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.add('open');
+        });
+
+        closeMobileMenu.addEventListener('click', closeMobile);
+
+        function closeMobile() {
+            mobileMenu.classList.remove('open');
+        }
+
+        // Navbar scroll effect
+        const navbar = document.querySelector('.navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Scroll reveal
+        const revealElements = document.querySelectorAll('.reveal');
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        });
+
+        revealElements.forEach(el => revealObserver.observe(el));
+
+        // Counter animation
+        const counters = document.querySelectorAll('[data-count]');
+        const counterObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const target = parseInt(entry.target.getAttribute('data-count'));
+                    animateCounter(entry.target, target);
+                    counterObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        counters.forEach(counter => counterObserver.observe(counter));
+
+        function animateCounter(element, target) {
+            let current = 0;
+            const increment = target / 60;
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    current = target;
+                    clearInterval(timer);
+                }
+                element.textContent = Math.floor(current).toLocaleString('de-DE');
+                if (target === 24) {
+                    element.textContent = Math.floor(current);
+                }
+            }, 30);
+        }
+
+        // FAQ toggle
+        function toggleFaq(element) {
+            const isOpen = element.classList.contains('open');
+            document.querySelectorAll('.faq-item').forEach(item => {
+                item.classList.remove('open');
+            });
+            if (!isOpen) {
+                element.classList.add('open');
+            }
+        }
+
+        // Create particles
+        function createParticles() {
+            const container = document.getElementById('particles');
+            for (let i = 0; i < 20; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.setProperty('--tx', (Math.random() - 0.5) * 200 + 'px');
+                particle.style.setProperty('--ty', (Math.random() - 0.5) * 200 + 'px');
+                particle.style.animationDelay = Math.random() * 8 + 's';
+                particle.style.animationDuration = (Math.random() * 4 + 6) + 's';
+                container.appendChild(particle);
+            }
+        }
+
+        createParticles();
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+
+</body>
+
+</html>
