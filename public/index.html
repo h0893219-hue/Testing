@@ -7,6 +7,7 @@
     <title>HighSociety De – Cannabis Community Discord</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/server-widget.css">
     <script>
         tailwind.config = {
             theme: {
@@ -588,6 +589,39 @@
         </div>
     </section>
 
+    <!-- Live Server Widget -->
+    <section id="server" class="server-widget-shell py-20 px-4 relative">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-12 reveal">
+                <span class="text-weed-400 font-medium text-sm uppercase tracking-wider">Live vom Discord</span>
+                <h2 class="font-display font-bold text-3xl sm:text-4xl md:text-5xl text-white mt-3 mb-4">
+                    Ein Blick in die Community
+                </h2>
+                <p class="text-gray-400 text-lg max-w-2xl mx-auto">
+                    Öffentliche Kanäle und anonyme Voice-Auslastung – ohne Namen, Profile oder Aktivitäten.
+                </p>
+            </div>
+
+            <div class="server-live-card reveal">
+                <div class="server-live-header">
+                    <div class="server-live-identity">
+                        <span class="server-live-indicator" aria-hidden="true"></span>
+                        <strong>HighSociety De</strong>
+                    </div>
+                    <span id="serverWidgetSummary">Live-Status wird geladen …</span>
+                </div>
+
+                <div
+                    id="serverWidgetChannels"
+                    aria-live="polite"
+                    aria-busy="true"
+                >
+                    <div class="server-widget-loading">Anonymisierten Server-Status laden …</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Features Section -->
     <section id="features" class="py-20 px-4 relative">
         <div class="max-w-7xl mx-auto">
@@ -945,6 +979,7 @@
         </div>
     </footer>
 
+    <script src="/server-widget.js" defer></script>
     <script>
         // ============================================
         // AGE GATE - HIER DIE WEITERLEITUNGS-URL ÄNDERN
