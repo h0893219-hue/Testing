@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#07130d" />
+    <title>High Harvest – Leaf Rush</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="ambient ambient-a"></div>
+    <div class="ambient ambient-b"></div>
+    <div class="app-shell">
+      <header class="topbar">
+        <div class="brand-lockup">
+          <img src="assets/highsociety-wordmark.png" alt="HighSociety" />
+          <div>
+            <span class="eyebrow">BROCOON ARCADE PRESENTS</span>
+            <h1>HIGH HARVEST <em>LEAF RUSH</em></h1>
+          </div>
+        </div>
+        <div class="top-actions">
+          <button class="icon-button" id="helpButton" aria-label="Spielhilfe">?</button>
+          <button class="icon-button" id="soundButton" aria-label="Ton an oder aus">♪</button>
+        </div>
+      </header>
+
+      <main class="game-layout">
+        <aside class="side-panel collectors-panel">
+          <div class="panel-kicker">CREW LEVEL</div>
+          <div id="collectorStats" class="collector-stats"></div>
+          <div class="mini-callout">
+            <strong>Höherer Wert zieht zuerst.</strong>
+            <span>Jedes Crew-Mitglied sammelt nur Blätter seiner Farbe – Features gehen immer.</span>
+          </div>
+        </aside>
+
+        <section class="machine" id="machine">
+          <div class="machine-head">
+            <div class="meter-copy">
+              <span>HARVEST METER</span>
+              <strong id="meterText">0 / 20</strong>
+            </div>
+            <div class="meter-track">
+              <div class="meter-fill" id="meterFill"></div>
+              <div class="meter-sheen"></div>
+            </div>
+            <div class="pending-features" id="pendingFeatures" aria-label="Gespeicherte Features"></div>
+          </div>
+
+          <div class="board-frame" id="boardFrame">
+            <div class="board-backdrop"></div>
+            <div class="phaser-board" id="phaserBoard" role="img" aria-label="Animiertes High-Harvest-Spielfeld"></div>
+            <div class="round-banner" id="roundBanner"></div>
+          </div>
+
+          <div class="status-strip">
+            <div class="status-main">
+              <span class="status-dot"></span>
+              <span id="statusText">Bereit für die Ernte.</span>
+            </div>
+            <div class="seed-progress" id="seedProgress" aria-label="Goldsamen für Bonus">
+              <span class="seed">◆</span><span class="seed">◆</span><span class="seed">◆</span>
+              <small>BONUS</small>
+            </div>
+          </div>
+        </section>
+
+        <aside class="side-panel feature-panel">
+          <div class="panel-kicker">FEATURE CHAOS</div>
+          <div class="feature-list">
+            <div><img src="assets/feature-grinder.webp" alt="" /><span><b>Grinder</b><small>+1 bis +3 Level</small></span></div>
+            <div><img src="assets/feature-controller.png" alt="" /><span><b>Grow Controller</b><small>Alle Level steigen</small></span></div>
+            <div><img src="assets/feature-bong.webp" alt="" /><span><b>Hotbox</b><small>Färbt Blätter um</small></span></div>
+            <div><img src="assets/feature-vaporizer.webp" alt="" /><span><b>Vape Bridge</b><small>Überbrückt eine Lücke</small></span></div>
+            <div><img src="assets/feature-rosin.webp" alt="" /><span><b>Rosin Wild</b><small>Füttert jeden Sammler</small></span></div>
+            <div><img src="assets/feature-seeds.png" alt="" /><span><b>Goldsamen</b><small>3 = 5 Free Drops</small></span></div>
+          </div>
+          <div class="bonus-card" id="bonusCard">
+            <span>FREE DROPS</span>
+            <strong id="freeDropsValue">0</strong>
+            <small id="bonusWinText">Bonusgewinn 0</small>
+          </div>
+        </aside>
+      </main>
+
+      <footer class="control-deck">
+        <div class="wallet hud-box">
+          <span>BROKKOLI</span>
+          <strong id="balanceValue">2.500</strong>
+        </div>
+        <div class="bet-control hud-box">
+          <button id="betDown" aria-label="Einsatz reduzieren">−</button>
+          <div><span>EINSATZ</span><strong id="betValue">20</strong></div>
+          <button id="betUp" aria-label="Einsatz erhöhen">+</button>
+        </div>
+        <button class="spin-button" id="spinButton">
+          <span class="spin-ring"></span>
+          <span class="spin-label">ERNTEN<small>SPACE</small></span>
+        </button>
+        <div class="win-box hud-box">
+          <span>RUNDE</span>
+          <strong id="winValue">0</strong>
+        </div>
+        <div class="grid-box hud-box">
+          <span>GRID</span>
+          <strong id="gridValue">6×6</strong>
+        </div>
+      </footer>
+    </div>
+
+    <dialog class="help-dialog" id="helpDialog">
+      <button class="dialog-close" id="closeHelp" aria-label="Schließen">×</button>
+      <span class="eyebrow">SCHNELLER ALS EIN REGELBUCH</span>
+      <h2>So läuft die Ernte</h2>
+      <p>Vier animierte Sammler bewegen sich automatisch orthogonal über das Feld. Jeder sammelt Hanfblätter seiner Farbe und jedes erreichbare Feature. Eingesammelte Blätter zahlen sofort und laden das Harvest Meter.</p>
+      <div class="help-grid">
+        <div><b>Volles Meter</b><span>Speichert bis zu drei Feature-Releases und wirft sie gemeinsam aufs Feld.</span></div>
+        <div><b>Level 1–7</b><span>Grinder erhöhen den Blattwert. Der wertvollste Sammler bewegt sich zuerst.</span></div>
+        <div><b>Grow Burst</b><span>Räumt einen Bereich frei, mischt die Crew und erweitert das Feld.</span></div>
+        <div><b>Goldsamen</b><span>Drei Samen starten fünf Free Drops. Grid, Level und Meter bleiben bestehen.</span></div>
+      </div>
+      <p class="fine-print">Langzeit-RTP ca. 92 %. Reines Arcade-Spiel mit Fantasie-Brokkoli. Kein Echtgeld, kein Krypto, kein Steuerberater mit Sonnenbrille.</p>
+    </dialog>
+
+    <script src="assets/phaser.min.js"></script>
+    <script src="game.js?v=phaser-6"></script>
+  </body>
+</html>

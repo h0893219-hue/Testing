@@ -1,0 +1,94 @@
+.high-harvest-section {
+    isolation: isolate;
+    scroll-margin-top: 4.5rem;
+    overflow: hidden;
+    background:
+        linear-gradient(180deg, transparent, rgba(20, 83, 45, 0.08) 22%, rgba(120, 77, 18, 0.08) 76%, transparent),
+        #080810;
+}
+
+.high-harvest-glow {
+    position: absolute;
+    top: 44%;
+    left: 50%;
+    z-index: -1;
+    width: min(92vw, 1180px);
+    aspect-ratio: 2 / 1;
+    border-radius: 50%;
+    background: radial-gradient(ellipse, rgba(246, 196, 75, 0.12), rgba(34, 197, 94, 0.06) 42%, transparent 72%);
+    filter: blur(50px);
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+}
+
+.high-harvest-frame-shell {
+    width: 100%;
+    overflow: hidden;
+    border: 1px solid rgba(246, 196, 75, 0.28);
+    border-radius: 2rem;
+    background: #07150d;
+    box-shadow:
+        0 30px 100px rgba(0, 0, 0, 0.5),
+        0 0 70px rgba(34, 197, 94, 0.08),
+        inset 0 1px rgba(255, 245, 183, 0.1);
+}
+
+.high-harvest-frame {
+    display: block;
+    width: 100%;
+    height: clamp(720px, 67vw, 920px);
+    border: 0;
+    background: #07150d;
+}
+
+.high-harvest-actions {
+    display: flex;
+    justify-content: center;
+    margin-top: 1.25rem;
+}
+
+.high-harvest-open-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.7rem 1rem;
+    border: 1px solid rgba(246, 196, 75, 0.22);
+    border-radius: 0.85rem;
+    color: #d1d5db;
+    background: rgba(7, 21, 13, 0.68);
+    font-size: 0.875rem;
+    font-weight: 600;
+    transition: border-color 180ms ease, color 180ms ease, transform 180ms ease;
+}
+
+.high-harvest-open-link:hover {
+    border-color: rgba(246, 196, 75, 0.55);
+    color: #ffe68a;
+    transform: translateY(-2px);
+}
+
+@media (max-width: 760px) {
+    .high-harvest-section {
+        padding-right: 0.5rem;
+        padding-left: 0.5rem;
+    }
+
+    .high-harvest-heading {
+        padding-right: 0.5rem;
+        padding-left: 0.5rem;
+    }
+
+    .high-harvest-frame-shell {
+        border-radius: 1.35rem;
+    }
+
+    .high-harvest-frame {
+        height: clamp(680px, 180vw, 780px);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .high-harvest-open-link {
+        transition: none;
+    }
+}
